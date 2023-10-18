@@ -268,7 +268,7 @@ $kanjiData = [
     [
         "Kanji" => "学",
         "Onyomi" => "ガク, ガッ",
-        "Kunyomi" => "まなぶ",
+        "Kunyomi" => "まな一ぶ",
         "English" => "Study, Learning",
     ],
     [
@@ -285,8 +285,8 @@ $kanjiData = [
     ],
     [
         "Kanji" => "本",
-        "Onyomi" => "ホン, ぽん, ぼん",
-        "Kunyomi" => "もと",
+        "Onyomi" => "ホン, 一ポン,一ボン",
+        "Kunyomi" => "もと,ほん",
         "English" => "Book, Origin",
     ],
     [
