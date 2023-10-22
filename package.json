@@ -1,0 +1,16 @@
+{
+  "name": "flash-kanji-php-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.php",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "commit": "cz"
+  },
+  "author": "Te Nyain",
+  "license": "ISC",
+  "devDependencies": {
+  },
+  "config": {
+  }
+}

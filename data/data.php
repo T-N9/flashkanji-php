@@ -310,7 +310,7 @@ $kanjiData = [
     [
         "Kanji" => "後",
         "Onyomi" => "コウ, ゴ",
-        "Kunyomi" => "うしろ, あと",
+        "Kunyomi" => "うし一ろ, あと",
         "English" => "Back, Behind",
     ],
     [
