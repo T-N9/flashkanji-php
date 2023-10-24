@@ -1,7 +1,7 @@
 <?php
-include './config/connectDb.php';
-include './includes/headers.php';
-include './includes/routeValues.php';
+include '../config/connectDb.php';
+include '../includes/headers.php';
+include '../includes/routeValues.php';
 
 /* Fetch All Kanji Data */
 $sql = "SELECT * FROM kanji";
@@ -39,9 +39,18 @@ function getRandomKanji($count)
     return $randomKanji;
 }
 
-// Handle API request
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if ($isRandIn) {
+    if ($isCharacterIn) {
+        /* Fetch Kanji Data by limits */
+        $sql = "SELECT * FROM kanji WHERE id =$characterValue ";
+        $result = $conn->query($sql);
+
+        $characterData = array();
+        while ($row = $result->fetch_assoc()) {
+            $characterData[] = $row;
+        }
+        echo json_encode($characterData);
+    } else if ($isRandIn) {
         $count = $randValue;
 
         // Return random Kanji
@@ -79,6 +88,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     http_response_code(405);
     echo json_encode(["error" => "Method not allowed"]);
 }
+
+
 
 $conn->close();
 

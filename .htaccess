@@ -1,4 +1,15 @@
-RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^api$ api.php [L,QSA]
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Remove trailing slash from URL
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+    # Rewrite /api?limit=5 to /api/?limit=5
+    RewriteCond %{QUERY_STRING} !^$
+    RewriteRule ^api$ /api/ [L]
+
+    # Rewrite /api/ to /api/index.php
+    RewriteRule ^api/$ /api/index.php [L]
+</IfModule>

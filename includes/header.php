@@ -5,5 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flash Kanji | Pocket Kanji Memorizer</title>
     <link rel="stylesheet" href="../css/output.css">
+    <link rel="stylesheet" href="../css/global.css">
 </head>
 <body>
