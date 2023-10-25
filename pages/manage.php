@@ -17,7 +17,7 @@
                         <input
                             class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             id="form_kanjiCharacter" type="text" placeholder="Enter Kanji Character"
-                            name="form_kanjiCharacter">
+                            name="form_kanjiCharacter" required>
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="form_onyomi">
@@ -25,7 +25,7 @@
                         </label>
                         <input
                             class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="form_onyomi" type="text" placeholder="Enter Onyomi" name="form_onyomi">
+                            id="form_onyomi" type="text" placeholder="Enter Onyomi" name="form_onyomi" required>
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="form_kunyomi">
@@ -33,7 +33,7 @@
                         </label>
                         <input
                             class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="form_kunyomi" type="text" placeholder="Enter Kunyomi" name="form_kunyomi">
+                            id="form_kunyomi" type="text" placeholder="Enter Kunyomi" name="form_kunyomi" required>
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="form_meaning">
@@ -41,7 +41,7 @@
                         </label>
                         <input
                             class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            id="form_meaning" type="text" placeholder="Enter Meaning" name="form_meaning">
+                            id="form_meaning" type="text" placeholder="Enter Meaning" name="form_meaning" required>
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="form_level">
@@ -49,7 +49,8 @@
                         </label>
                         <div class="relative inline-block w-32">
                             <select aria-placeholder="Select level" name="form_level" id="form_level"
-                                class="block cursor-pointer appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline-blue focus:border-blue-300">
+                                class="block cursor-pointer appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline-blue focus:border-blue-300"
+                                required>
                                 <option value=5>N5</option>
                                 <option value=4>N4</option>
                                 <option value=3>N3</option>
@@ -65,7 +66,8 @@
                         </label>
                         <div class="relative inline-block w-32">
                             <select aria-placeholder="Select chapter" name="form_chapter" id="form_chapter"
-                                class="block cursor-pointer appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline-blue focus:border-blue-300">
+                                class="block cursor-pointer appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline-blue focus:border-blue-300"
+                                required>
                             </select>
                         </div>
 

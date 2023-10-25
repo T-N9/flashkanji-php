@@ -97,7 +97,8 @@ document.addEventListener("DOMContentLoaded", function () {
       for (const key in updatedValue) {
         if (
           updatedValue.hasOwnProperty(key) &&
-          kanjiData[key] !== updatedValue[key]
+          kanjiData[key] !== updatedValue[key] &&
+          updatedValue[key] !== ""
         ) {
           queryParams += `&${key}=${updatedValue[key]}`;
           includeParams += `&${key}=${updatedValue[key]}`;
@@ -105,23 +106,28 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    fetch(`../api/update.php`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: queryParams,
-    })
-      .then((response) => response.text())
-      .then((data) => {
-        console.log(data);
-
-        alert("Data Updated");
-        location.reload();
+    console.log({ queryParams, includeParams });
+    if (includeParams !== "") {
+      fetch(`../api/update.php`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: queryParams,
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+        .then((response) => response.text())
+        .then((data) => {
+          console.log(data);
+
+          alert("Data Updated");
+          location.reload();
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    } else {
+      alert("No updated data or form is incomplete.");
+    }
   });
 
   let alert_box = document.getElementById("alert_box");
