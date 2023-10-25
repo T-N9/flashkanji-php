@@ -7,7 +7,8 @@
         <div class="flex-[5] relative">
             <form action="../api/update.php" method="post" id="kanjiForm"
                 class="p-4 sticky top-14 rounded shadow bg-white">
-                <div class="absolute -left-6 top-0 p-4 text-2xl font-bold shadow-lg rounded-full bg-orange-200" id="character_review"></div>
+                <div class="absolute -left-6 top-0 p-4 text-2xl font-bold shadow-lg rounded-full bg-orange-200"
+                    id="character_review"></div>
                 <div class="grid gap-3 grid-cols-2 lg:grid-cols-3">
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="form_kanjiCharacter">
@@ -49,11 +50,11 @@
                         <div class="relative inline-block w-32">
                             <select aria-placeholder="Select level" name="form_level" id="form_level"
                                 class="block cursor-pointer appearance-none w-full bg-white border border-gray-300 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline-blue focus:border-blue-300">
-                                <option>5</option>
-                                <option>4</option>
-                                <option>3</option>
-                                <option>2</option>
-                                <option>1</option>
+                                <option value=5>N5</option>
+                                <option value=4>N4</option>
+                                <option value=3>N3</option>
+                                <option value=2>N2</option>
+                                <option value=1>N1</option>
                             </select>
                         </div>
 
