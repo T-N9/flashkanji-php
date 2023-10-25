@@ -24,6 +24,16 @@ if (isset($_POST["meaning"])) {
     $updates[] = "meaning='$meaning'";
 }
 
+if (isset($_POST["level"])) {
+    $level = $_POST["level"];
+    $updates[] = "level='$level'";
+}
+
+if (isset($_POST["chapter"])) {
+    $chapter = $_POST["chapter"];
+    $updates[] = "chapter='$chapter'";
+}
+
 if (!empty($updates)) {
     $updateString = implode(',', $updates);
 

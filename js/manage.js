@@ -1,13 +1,17 @@
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("kanjiForm");
   /* Form values */
-  let character_value = form.querySelector("#form_kanjiCharacter");
-  let onyomi_value = form.querySelector("#form_onyomi");
-  let kunyomi_value = form.querySelector("#form_kunyomi");
-  let meaning_value = document.getElementById("form_meaning");
+  let form_character = form.querySelector("#form_kanjiCharacter");
+  let form_onyomi = form.querySelector("#form_onyomi");
+  let form_kunyomi = form.querySelector("#form_kunyomi");
+  let form_meaning = document.getElementById("form_meaning");
+  let form_level = document.getElementById("form_level");
+  let form_chapter = document.getElementById("form_chapter");
   let update_btn = document.getElementById("form_update");
   let delete_btn = document.getElementById("form_delete");
   const kanjiChars = document.querySelectorAll(".kanji_char");
+
+  let character_review = document.getElementById("character_review");
 
   let kanji_grid = document.getElementById("kanji_grid");
   let first_item_in_grid = kanji_grid.firstElementChild;
@@ -40,13 +44,17 @@ document.addEventListener("DOMContentLoaded", function () {
   let kanjiData;
   function populateForm(data) {
     character_id = data.id;
-    character_value.value = data.kanji_character;
-    onyomi_value.value = data.onyomi;
-    kunyomi_value.value = data.kunyomi;
-    meaning_value.value = data.meaning;
+    form_character.value = data.kanji_character;
+    form_onyomi.value = data.onyomi;
+    form_kunyomi.value = data.kunyomi;
+    form_meaning.value = data.meaning;
+    form_level.value = data.level;
+    form_chapter.value = data.chapter;
+
+    character_review.innerHTML = `<h1>${data.kanji_character}</h1>`;
 
     kanjiData = data;
-    console.log({ kanjiData });
+    // console.log({ kanjiData });
   }
 
   function compareObjects(obj1, obj2) {
@@ -64,16 +72,20 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   update_btn.addEventListener("click", function () {
-    const kanjiCharacter = character_value.value;
-    const onyomi = onyomi_value.value;
-    const kunyomi = kunyomi_value.value;
-    const meaning = meaning_value.value;
+    const kanjiCharacter = form_character.value;
+    const onyomi = form_onyomi.value;
+    const kunyomi = form_kunyomi.value;
+    const meaning = form_meaning.value;
+    const level = form_level.value;
+    const chapter = form_chapter.value;
 
     let formData = {
       kanji_character: kanjiCharacter,
       onyomi: onyomi,
       kunyomi: kunyomi,
       meaning: meaning,
+      level: level,
+      chapter: chapter,
     };
 
     let updatedValue = compareObjects(kanjiData, formData);
@@ -103,6 +115,9 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((response) => response.text())
       .then((data) => {
         console.log(data);
+
+        alert("Data Updated");
+        location.reload();
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -157,7 +172,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     setTimeout(function () {
       overlay.classList.add("active");
-    }, 0); 
+    }, 0);
 
     overlay.innerHTML = `
           <div class="alert_box_wrapper bg-white p-8 rounded shadow">
@@ -171,4 +186,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
     addEventListeners();
   });
+
+  function updateChapters() {
+    // Clear previous options
+    form_chapter.innerHTML = "";
+    var level_value = form_level.value;
+
+    // Define chapters based on selected level
+    var chapterCount = {
+      5: 11,
+      4: 20,
+      3: 30, // Add chapters for N3
+      2: 40, // Add chapters for N2
+      1: 50, // Add chapters for N1
+    };
+
+    for (var i = 1; i <= chapterCount[level_value]; i++) {
+      var option = document.createElement("option");
+      option.value = i;
+      option.textContent = "Chapter " + i;
+      form_chapter.appendChild(option);
+    }
+  }
+
+  form_level.addEventListener("change", function () {
+    updateChapters();
+  });
+
+  updateChapters();
 });

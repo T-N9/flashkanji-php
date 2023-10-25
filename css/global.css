@@ -37,3 +37,8 @@
 .justify-around {
     justify-content: space-around;
 }
+
+#character_review {
+    left: -40px;
+    top: -30px;
+}
