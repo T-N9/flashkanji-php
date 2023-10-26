@@ -1,9 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const form = document.getElementById("kanjiForm");
+  const updateForm = document.getElementById("updateKanjiForm");
+  let createForm = document.getElementById("createKanjiForm");
   /* Form values */
-  let form_character = form.querySelector("#form_kanjiCharacter");
-  let form_onyomi = form.querySelector("#form_onyomi");
-  let form_kunyomi = form.querySelector("#form_kunyomi");
+  let form_character = updateForm.querySelector("#form_kanjiCharacter");
+  let form_onyomi = updateForm.querySelector("#form_onyomi");
+  let form_kunyomi = updateForm.querySelector("#form_kunyomi");
   let form_meaning = document.getElementById("form_meaning");
   let form_level = document.getElementById("form_level");
   let form_chapter = document.getElementById("form_chapter");
@@ -11,7 +12,34 @@ document.addEventListener("DOMContentLoaded", function () {
   let delete_btn = document.getElementById("form_delete");
   const kanjiChars = document.querySelectorAll(".kanji_char");
 
+  let create_character = createForm.querySelector("#create_kanjiCharacter");
+  let create_onyomi = createForm.querySelector("#create_onyomi");
+  let create_kunyomi = createForm.querySelector("#create_kunyomi");
+  let create_meaning = document.getElementById("create_meaning");
+  let create_level = document.getElementById("create_level");
+  let create_chapter = document.getElementById("create_chapter");
+  let cancel_create_btn = document.getElementById("cancel_create");
+  let create_item_btn = document.getElementById("create_item");
+
+  let isUpdating = true;
+
+  let setNew_btn = document.getElementById("form_setNew");
+
   let character_review = document.getElementById("character_review");
+
+  setNew_btn.addEventListener("click", function () {
+    isUpdating = false;
+
+    updateForm.classList += " hidden";
+    createForm.classList = "p-4 sticky top-14 rounded shadow bg-white";
+  });
+
+  cancel_create_btn.addEventListener("click", function () {
+    isUpdating = true;
+
+    updateForm.classList = "p-4 sticky top-14 rounded shadow bg-white";
+    createForm.classList += " hidden";
+  });
 
   let kanji_grid = document.getElementById("kanji_grid");
   let first_item_in_grid = kanji_grid.firstElementChild;
@@ -106,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    console.log({ queryParams, includeParams });
+    // console.log({ queryParams, includeParams });
     if (includeParams !== "") {
       fetch(`../api/update.php`, {
         method: "POST",
@@ -117,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function () {
       })
         .then((response) => response.text())
         .then((data) => {
-          console.log(data);
+          // console.log(data);
 
           alert("Data Updated");
           location.reload();
@@ -127,6 +155,69 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     } else {
       alert("No updated data or form is incomplete.");
+    }
+  });
+
+  create_item_btn.addEventListener("click", function () {
+    const kanjiCharacter = create_character.value;
+    const onyomi = create_onyomi.value;
+    const kunyomi = create_kunyomi.value;
+    const meaning = create_meaning.value;
+    const level = create_level.value;
+    const chapter = create_chapter.value;
+    let isRequired = false;
+
+    let formData = {
+      kanji_character: kanjiCharacter,
+      onyomi: onyomi,
+      kunyomi: kunyomi,
+      meaning: meaning,
+      level: level,
+      chapter: chapter,
+    };
+
+
+
+    let queryParams = `id=${kanjiData?.id}`;
+    let includeParams = ``;
+
+    if (kanjiData) {
+      for (const key in formData) {
+        if (
+          formData.hasOwnProperty(key) &&
+          formData[key] !== "" &&
+          formData[key] !== "0"
+        ) {
+          queryParams += `&${key}=${formData[key]}`;
+          includeParams += `&${key}=${formData[key]}`;
+          isRequired = false;
+        } else {
+          isRequired = true;
+        }
+      }
+    }
+
+    // console.log({ queryParams, includeParams });
+    if (includeParams !== "" && isRequired === false) {
+      fetch(`../api/create.php`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: queryParams,
+      })
+        .then((response) => response.text())
+        .then((data) => {
+          // console.log(data);
+
+          alert("Data Added.");
+          location.reload();
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    } else {
+      alert("Form is incomplete.");
     }
   });
 
@@ -154,7 +245,7 @@ document.addEventListener("DOMContentLoaded", function () {
       })
         .then((response) => response.text())
         .then((data) => {
-          console.log(data);
+          // console.log(data);
 
           let overlay = document.querySelector(".overlay");
           overlay.classList.remove("active");
@@ -196,7 +287,10 @@ document.addEventListener("DOMContentLoaded", function () {
   function updateChapters() {
     // Clear previous options
     form_chapter.innerHTML = "";
+    create_chapter.innerHTML = "";
+
     var level_value = form_level.value;
+    var create_level_value = create_level.value;
 
     // Define chapters based on selected level
     var chapterCount = {
@@ -207,15 +301,26 @@ document.addEventListener("DOMContentLoaded", function () {
       1: 50, // Add chapters for N1
     };
 
-    for (var i = 1; i <= chapterCount[level_value]; i++) {
-      var option = document.createElement("option");
+    for (let i = 1; i <= chapterCount[level_value]; i++) {
+      let option = document.createElement("option");
       option.value = i;
       option.textContent = "Chapter " + i;
       form_chapter.appendChild(option);
     }
+
+    for (let i = 1; i <= chapterCount[create_level_value]; i++) {
+      let option = document.createElement("option");
+      option.value = i;
+      option.textContent = "Chapter " + i;
+      create_chapter.appendChild(option);
+    }
   }
 
   form_level.addEventListener("change", function () {
+    updateChapters();
+  });
+
+  create_level.addEventListener("change", function () {
     updateChapters();
   });
 
