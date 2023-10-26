@@ -4,8 +4,8 @@ include "../config/connectDb.php";
 $id = $_POST["id"];
 $updates = [];
 
-if (isset($_POST["character"])) {
-    $kanji_character = $_POST["character"];
+if (isset($_POST["kanji_character"])) {
+    $kanji_character = $_POST["kanji_character"];
     $updates[] = "kanji_character='$kanji_character'";
 }
 
