@@ -31,13 +31,13 @@ document.addEventListener("DOMContentLoaded", function () {
     isUpdating = false;
 
     updateForm.classList += " hidden";
-    createForm.classList = "p-4 sticky top-14 rounded shadow bg-white";
+    createForm.classList = "p-4 sticky top-6 rounded shadow bg-white";
   });
 
   cancel_create_btn.addEventListener("click", function () {
     isUpdating = true;
 
-    updateForm.classList = "p-4 sticky top-14 rounded shadow bg-white";
+    updateForm.classList = "p-4 sticky top-6 rounded shadow bg-white";
     createForm.classList += " hidden";
   });
 
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       isUpdating = true;
 
-      updateForm.classList = "p-4 sticky top-14 rounded shadow bg-white";
+      updateForm.classList = "p-4 sticky top-6 rounded shadow bg-white";
       createForm.classList += " hidden";
     });
   });

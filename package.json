@@ -5,7 +5,8 @@
   "main": "index.php",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "commit": "gitmoji -c"
+    "commit": "gitmoji -c",
+    "build-css" : "npx tailwindcss -i css/style.css -o css/output.css --watch"
   },
   "author": "Te Nyain",
   "license": "ISC",
