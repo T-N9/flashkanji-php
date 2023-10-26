@@ -57,6 +57,11 @@ document.addEventListener("DOMContentLoaded", function () {
     char.addEventListener("click", function () {
       const kanjiId = this.dataset.kanjiId;
       fetchKanjiDetails(kanjiId);
+
+      isUpdating = true;
+
+      updateForm.classList = "p-4 sticky top-14 rounded shadow bg-white";
+      createForm.classList += " hidden";
     });
   });
 
