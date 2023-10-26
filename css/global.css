@@ -75,3 +75,7 @@ form .second_character {
 form label {
     color: #23427C !important;
 }
+
+nav {
+  background-color: #fff;
+}
