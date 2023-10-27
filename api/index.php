@@ -69,9 +69,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         }
         echo json_encode($limitedKanjiData);
 
-    } else if ($isChapterIn) {
-        /* Fetch Kanji Data by Chapters */
-        $sql = "SELECT * FROM kanji WHERE chapter = $chapterValue";
+    } else if ($isChapterIn && $isLevelIn) {
+        /* Fetch Kanji Data by Chapters and Levels */
+        $sql = "SELECT * FROM kanji WHERE chapter = $chapterValue AND level = $levelValue";
         $result = $conn->query($sql);
 
         $chapterKanjiData = array();
@@ -79,6 +79,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $chapterKanjiData[] = $row;
         }
         echo json_encode($chapterKanjiData);
+    } else if ($isLevelIn) {
+        /* Fetch Kanji Data only by Levels */
+        $sql = "SELECT * FROM kanji WHERE level = $levelValue";
+        $result = $conn->query($sql);
+
+        $levelKanjiData = array();
+        while ($row = $result->fetch_assoc()) {
+            $levelKanjiData[] = $row;
+        }
+        echo json_encode($levelKanjiData);
     } else {
         echo json_encode($allKanjiData);
     }
