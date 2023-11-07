@@ -3,14 +3,26 @@ include '../config/connectDb.php';
 include '../includes/headers.php';
 include '../includes/routeValues.php';
 
+function fetchKanjiData($sql)
+{
+    global $conn;
+    $result = $conn->query($sql);
+
+    if ($result === false) {
+        return [];
+    }
+
+    $data = [];
+    while ($row = $result->fetch_assoc()) {
+        $data[] = $row;
+    }
+
+    return $data;
+}
+
 /* Fetch All Kanji Data */
 $sql = "SELECT * FROM kanji";
-$result = $conn->query($sql);
-
-$allKanjiData = array();
-while ($row = $result->fetch_assoc()) {
-    $allKanjiData[] = $row;
-}
+$allKanjiData = fetchKanjiData($sql);
 
 // Get random Kanji
 function getRandomKanji($count)
@@ -41,53 +53,32 @@ function getRandomKanji($count)
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if ($isCharacterIn) {
-        /* Fetch Kanji Data by limits */
+        /* Fetch Character data by its ID */
         $sql = "SELECT * FROM kanji WHERE id =$characterValue ";
-        $result = $conn->query($sql);
-
-        $characterData = array();
-        while ($row = $result->fetch_assoc()) {
-            $characterData[] = $row;
-        }
+        $characterData = fetchKanjiData($sql);
         echo json_encode($characterData);
     } else if ($isRandIn) {
         $count = $randValue;
-
         // Return random Kanji
         $randomKanji = getRandomKanji($count);
-
         echo json_encode($randomKanji);
-
     } else if ($isLimitIn) {
         /* Fetch Kanji Data by limits */
         $sql = "SELECT * FROM kanji ORDER BY id LIMIT $limitValue OFFSET $fromValue ";
-        $result = $conn->query($sql);
-
-        $limitedKanjiData = array();
-        while ($row = $result->fetch_assoc()) {
-            $limitedKanjiData[] = $row;
-        }
+        $limitedKanjiData = fetchKanjiData($sql);
         echo json_encode($limitedKanjiData);
 
     } else if ($isChapterIn && $isLevelIn) {
         /* Fetch Kanji Data by Chapters and Levels */
         $sql = "SELECT * FROM kanji WHERE chapter = $chapterValue AND level = $levelValue";
-        $result = $conn->query($sql);
 
-        $chapterKanjiData = array();
-        while ($row = $result->fetch_assoc()) {
-            $chapterKanjiData[] = $row;
-        }
+        $chapterKanjiData = fetchKanjiData($sql);
         echo json_encode($chapterKanjiData);
     } else if ($isLevelIn) {
         /* Fetch Kanji Data only by Levels */
         $sql = "SELECT * FROM kanji WHERE level = $levelValue";
-        $result = $conn->query($sql);
 
-        $levelKanjiData = array();
-        while ($row = $result->fetch_assoc()) {
-            $levelKanjiData[] = $row;
-        }
+        $levelKanjiData = fetchKanjiData($sql);
         echo json_encode($levelKanjiData);
     } else {
         echo json_encode($allKanjiData);
