@@ -74,6 +74,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         $chapterKanjiData = fetchKanjiData($sql);
         echo json_encode($chapterKanjiData);
+    } else if ($isChaptersIn && $isLevelIn) {
+        $sql = "SELECT * FROM kanji WHERE chapter IN ($chaptersValue) AND level = $levelValue";
+        $chaptersKanjiData = fetchKanjiData($sql);
+        echo json_encode($chaptersKanjiData);
     } else if ($isLevelIn) {
         /* Fetch Kanji Data only by Levels */
         $sql = "SELECT * FROM kanji WHERE level = $levelValue";
@@ -89,9 +93,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     http_response_code(405);
     echo json_encode(["error" => "Method not allowed"]);
 }
-
-
-
 $conn->close();
-
 ?>

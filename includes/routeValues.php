@@ -3,6 +3,7 @@ $isRandIn = isset($_GET['rand']);
 $isLimitIn = isset($_GET['limit']);
 $isFromIn = isset($_GET['from']);
 $isChapterIn = isset($_GET['chapter']);
+$isChaptersIn = isset($_GET['chapters']);
 $isLevelIn = isset($_GET['level']);
 $isCharacterIn = isset($_GET['character']);
 
@@ -17,6 +18,7 @@ $randValue = $isRandIn ? intval($_GET['rand']) : 0;
 $limitValue = $isLimitIn ? intval($_GET['limit']) : 10;
 $fromValue = $isFromIn ? intval($_GET['from']) - 1 : 0;
 $chapterValue = $isChapterIn ? intval($_GET['chapter']) : 1;
+$chaptersValue = $isChaptersIn ? $_GET['chapters'] : 1;
 $levelValue = $isLevelIn ? intval($_GET['level']) : 5;
 $characterValue = $isCharacterIn ? intval($_GET['character']) : 1 ;
 
