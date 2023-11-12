@@ -84,8 +84,6 @@ document.addEventListener("DOMContentLoaded", function () {
     form_level.value = data.level;
     form_chapter.value = data.chapter;
 
-    character_review.innerHTML = `<h1>${data.kanji_character}</h1>`;
-
     kanjiData = data;
     // console.log({ kanjiData });
   }
@@ -139,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    // console.log({ queryParams, includeParams });
+    // console.log({ kanjiData, queryParams, includeParams });
     if (includeParams !== "") {
       fetch(`../api/update.php`, {
         method: "POST",
@@ -180,8 +178,6 @@ document.addEventListener("DOMContentLoaded", function () {
       level: level,
       chapter: chapter,
     };
-
-
 
     let queryParams = `id=${kanjiData?.id}`;
     let includeParams = ``;
