@@ -84,6 +84,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         $levelKanjiData = fetchKanjiData($sql);
         echo json_encode($levelKanjiData);
+    } else if ($isSearchIn) {
+        $sql = "SELECT * FROM kanji WHERE 
+            kanji_character LIKE '%$searchValue%' OR 
+            onyomi LIKE '%$searchValue%' OR 
+            kunyomi LIKE '%$searchValue%' OR 
+            meaning LIKE '%$searchValue%'";
+
+        $searchKanjiData = fetchKanjiData($sql);
+        echo json_encode($searchKanjiData);
     } else {
         echo json_encode($allKanjiData);
     }
