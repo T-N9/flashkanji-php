@@ -7,6 +7,7 @@ $isChaptersIn = isset($_GET['chapters']);
 $isLevelIn = isset($_GET['level']);
 $isCharacterIn = isset($_GET['character']);
 $isSearchIn = isset($_GET['search']);
+$isQuizMode = isset($_GET['mode']);
 
 // POST
 $isActionIn = isset($_POST['action']);
@@ -23,6 +24,7 @@ $chaptersValue = $isChaptersIn ? $_GET['chapters'] : 1;
 $levelValue = $isLevelIn ? intval($_GET['level']) : 5;
 $characterValue = $isCharacterIn ? intval($_GET['character']) : 1 ;
 $searchValue = $isSearchIn ? $_GET['search'] : '';
+$quizModeValue = $isQuizMode ? intval($_GET['mode']) : 1 ;
 
 // POST
 $actionValue = $isActionIn ? intval($_POST['action']) : 'update';

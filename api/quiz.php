@@ -53,26 +53,42 @@ function getRandomKanji($count)
 
 function generateQuiz($quizData)
 {
+    global $quizModeValue;
     $quizItems = [];
 
     foreach ($quizData as $item) {
-        // Shuffle the onyomi options
-        $onyomiOptions = [$item["onyomi"]];
-        while (count($onyomiOptions) < 4) {
+        switch ($quizModeValue) {
+            case 1:
+                $optionsKey = "onyomi";
+                break;
+            case 2:
+                $optionsKey = "kunyomi";
+                break;
+            case 3:
+                $optionsKey = "meaning";
+                break;
+            default:
+                // Handle unsupported mode or set a default value
+                $optionsKey = "";
+        }
+
+        // Shuffle the options
+        $options = [$item[$optionsKey]];
+        while (count($options) < 4) {
             $randomItem = $quizData[array_rand($quizData)];
-            if (!in_array($randomItem["onyomi"], $onyomiOptions)) {
-                $onyomiOptions[] = $randomItem["onyomi"];
+            if (!in_array($randomItem[$optionsKey], $options)) {
+                $options[] = $randomItem[$optionsKey];
             }
         }
 
         // Shuffle the options to make sure the correct answer is not always in the same position
-        shuffle($onyomiOptions);
+        shuffle($options);
 
         $quizItems[] = [
             "id" => $item["id"],
             "kanji_character" => $item["kanji_character"],
-            "options" => $onyomiOptions,
-            "correct_option" => array_search($item["onyomi"], $onyomiOptions),
+            "options" => $options,
+            "correct_option" => array_search($item[$optionsKey], $options),
         ];
     }
 
@@ -82,19 +98,15 @@ function generateQuiz($quizData)
 $quizCount = 10;
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+
+    $isLevelIn && $quizCount = $limitValue;
+
     if ($isRandIn) {
         $count = $randValue;
         // Return random Kanji
         $randomKanji = getRandomKanji($count);
         $randomKanji_quized = generateQuiz($randomKanji);
         echo json_encode($randomKanji_quized, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-    } else if ($isLimitIn) {
-        /* Fetch Kanji Data by limits */
-        $sql = "SELECT * FROM kanji ORDER BY id LIMIT $limitValue OFFSET $fromValue ";
-        $limitedKanjiData = fetchKanjiData($sql);
-        $limitedKanjiData_quized = generateQuiz($limitedKanjiData);
-        echo json_encode($limitedKanjiData_quized, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-
     } else if ($isChapterIn && $isLevelIn) {
         /* Fetch Kanji Data by Chapters and Levels */
         $sql = "SELECT * FROM kanji WHERE chapter = $chapterValue AND level = $levelValue";
@@ -117,9 +129,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $levelKanjiData_quized = generateQuiz($levelKanjiData);
         shuffle($levelKanjiData_quized);
         echo json_encode(array_slice($levelKanjiData_quized, 0, $quizCount), JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    } else if ($isLimitIn) {
+        /* Fetch Kanji Data by limits */
+        $sql = "SELECT * FROM kanji ORDER BY id LIMIT $limitValue OFFSET $fromValue ";
+        $limitedKanjiData = fetchKanjiData($sql);
+        $limitedKanjiData_quized = generateQuiz($limitedKanjiData);
+        echo json_encode($limitedKanjiData_quized, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+
     } else {
-        $defaultQuiz = generateQuiz(array_slice($allKanjiData, 0,10));
-        echo json_encode($defaultQuiz,JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        $defaultQuiz = generateQuiz(array_slice($allKanjiData, 0, 10));
+        echo json_encode($defaultQuiz, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
     }
 
 
