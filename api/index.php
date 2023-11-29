@@ -52,7 +52,18 @@ function getRandomKanji($count)
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if ($isCharacterIn) {
+    if ($isShuffled && $isPageIn) {
+        // Determine the current page
+        $itemsPerPage = 10;
+        $offset = ($pageValue - 1) * $itemsPerPage;
+
+        // Select 10 items based on pagination
+        $sql = "SELECT * FROM shuffled_kanji LIMIT $offset, $itemsPerPage";
+        $shuffledData = fetchKanjiData($sql);
+
+        echo json_encode($shuffledData);
+
+    } else if ($isCharacterIn) {
         /* Fetch Character data by its ID */
         $sql = "SELECT * FROM kanji WHERE id =$characterValue ";
         $characterData = fetchKanjiData($sql);
@@ -96,6 +107,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     } else {
         echo json_encode($allKanjiData);
     }
+
+
+
 
 
 } else {
