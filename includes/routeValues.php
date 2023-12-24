@@ -11,6 +11,7 @@ $isSearchIn = isset($_GET['search']);
 $isQuizMode = isset($_GET['mode']);
 $isShuffled = isset($_GET['shuffled']);
 $isPageIn = isset($_GET['page']);
+$isKanjisIn = isset($_GET['kanjis']);
 
 // POST
 $isActionIn = isset($_POST['action']);
@@ -30,6 +31,7 @@ $characterValue = $isCharacterIn ? intval($_GET['character']) : 1;
 $searchValue = $isSearchIn ? $_GET['search'] : '';
 $quizModeValue = $isQuizMode ? intval($_GET['mode']) : 1;
 $pageValue = $isPageIn ? intval($_GET['page']) : 1;
+$kanjisValue = $isKanjisIn ? $_GET['kanjis'] : '';
 
 // POST
 $actionValue = $isActionIn ? intval($_POST['action']) : 'update';
