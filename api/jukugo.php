@@ -24,59 +24,80 @@ function fetchJukugoData($sql)
     return $data;
 }
 
-function getRandomJukugo($count)
+function getRandomJukugo($count, $isLevel = 0)
 {
     global $allJukugoData;
 
     $randomJukugo = [];
 
-    if (1 < $count && $count <= count($allJukugoData)) {
-        // Get a random sample of Jukugo from the data
-        $randomKeys = array_rand($allJukugoData, $count);
+    if ($isLevel > 0) {
+        $sql = "SELECT * FROM jukugo WHERE level=$isLevel";
+        $jukugoByLevel = fetchJukugoData($sql);
 
-        foreach ($randomKeys as $key) {
-            $randomJukugo[] = $allJukugoData[$key];
+        if (1 < $count && $count <= count($jukugoByLevel)) {
+            // Get a random sample of Jukugo from the data
+            $randomKeys = array_rand($jukugoByLevel, $count);
+
+            foreach ($randomKeys as $key) {
+                $randomJukugo[] = $jukugoByLevel[$key];
+            }
+        } elseif ($count === 1) {
+            $randNo = rand(0, count($jukugoByLevel));
+
+            $randomJukugo = $jukugoByLevel[$randNo];
+        } elseif ($count === 0 || $count > count($jukugoByLevel)) {
+            $randomJukugo = $jukugoByLevel;
+            shuffle($randomJukugo);
         }
-    } elseif ($count === 1) {
-        $randNo = rand(0, count($allJukugoData));
 
-        $randomJukugo = $allJukugoData[$randNo];
-    } elseif ($count === 0 || $count > count($allJukugoData)) {
-        $randomJukugo = $allJukugoData;
-        shuffle($randomJukugo);
+    } else {
+        if (1 < $count && $count <= count($allJukugoData)) {
+            // Get a random sample of Jukugo from the data
+            $randomKeys = array_rand($allJukugoData, $count);
+
+            foreach ($randomKeys as $key) {
+                $randomJukugo[] = $allJukugoData[$key];
+            }
+        } elseif ($count === 1) {
+            $randNo = rand(0, count($allJukugoData));
+
+            $randomJukugo = $allJukugoData[$randNo];
+        } elseif ($count === 0 || $count > count($allJukugoData)) {
+            $randomJukugo = $allJukugoData;
+            shuffle($randomJukugo);
+        }
     }
-
-
     return $randomJukugo;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
-    if ($isRandIn) {
+    if ($isRandIn && $isLevelIn) {
+        $count = $randValue;
+        // Return random Kanji
+        $randomJukugo = getRandomJukugo($count, $levelValue);
+        // echo "helsdfj";
+        echo json_encode($randomJukugo);
+    } elseif ($isRandIn) {
         $count = $randValue;
         // Return random Kanji
         $randomJukugo = getRandomJukugo($count);
         echo json_encode($randomJukugo);
-    } elseif ($isKanjisIn) {
-        // Explode the $kanjisValue into an array if there are multiple values
-        $kanjisArray = explode(',', $kanjisValue);
+    } elseif ($isLevelIn) {
+        $sql = "SELECT * FROM jukugo WHERE level=$levelValue";
 
-        // Trim each value in the array
+        $jukugoData = fetchJukugoData($sql);
+        echo json_encode($jukugoData);
+    } elseif ($isKanjisIn) {
+        $kanjisArray = explode(',', $kanjisValue);
         $kanjisArray = array_map('trim', $kanjisArray);
 
-        // Create a string for the LIKE clause if there are multiple values
         $likeClause = count($kanjisArray) > 1 ? "'%" . implode("%' OR jukugo_char LIKE '%", $kanjisArray) . "%'" : "'%$kanjisValue%'";
 
         // Build the SQL query with the LIKE clause
         $sql = "SELECT * FROM jukugo WHERE jukugo_char LIKE $likeClause";
 
-        // Debug information
-        echo "SQL Query: $sql\n";
-
         $jukugoData = fetchJukugoData($sql);
-
-        echo "Fetched Data: ";
-        print_r($jukugoData);
 
         echo json_encode($jukugoData);
     } else {
