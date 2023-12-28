@@ -95,7 +95,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $likeClause = count($kanjisArray) > 1 ? "'%" . implode("%' OR jukugo_char LIKE '%", $kanjisArray) . "%'" : "'%$kanjisValue%'";
 
         // Build the SQL query with the LIKE clause
-        $sql = "SELECT * FROM jukugo WHERE jukugo_char LIKE $likeClause";
+        $sql = "SELECT jukugo_char, MAX(english_meaning) AS english_meaning, MAX(hiragana) AS hiragana
+        FROM jukugo
+        WHERE jukugo_char LIKE $likeClause
+        GROUP BY jukugo_char;
+        ";
 
         $jukugoData = fetchJukugoData($sql);
 
