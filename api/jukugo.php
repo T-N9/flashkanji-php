@@ -72,7 +72,28 @@ function getRandomJukugo($count, $isLevel = 0)
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
-    if ($isRandIn && $isLevelIn) {
+    if ($isChapterIn && $isLevelIn) {
+        $sql = "SELECT j.jukugo_char, MAX(j.english_meaning) AS english_meaning, MAX(j.hiragana) AS hiragana
+        FROM jukugo j
+        WHERE EXISTS (
+            SELECT 1
+            FROM kanji k
+            WHERE k.chapter = $chapterValue
+              AND k.level = $levelValue
+              AND j.jukugo_char LIKE CONCAT('%', k.kanji_character, '%')
+        )
+        GROUP BY j.jukugo_char
+        ORDER BY (
+            SELECT MIN(k.id)
+            FROM kanji k
+            WHERE k.chapter = $chapterValue
+              AND k.level = $levelValue
+              AND j.jukugo_char LIKE CONCAT('%', k.kanji_character, '%')
+        );
+        ";
+        $jukugoData = fetchJukugoData($sql);
+        echo json_encode($jukugoData);
+    } elseif ($isRandIn && $isLevelIn) {
         $count = $randValue;
         // Return random Kanji
         $randomJukugo = getRandomJukugo($count, $levelValue);
