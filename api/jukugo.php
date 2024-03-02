@@ -73,7 +73,7 @@ function getRandomJukugo($count, $isLevel = 0)
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     if ($isChapterIn && $isLevelIn) {
-        $sql = "SELECT j.jukugo_char, MAX(j.english_meaning) AS english_meaning, MAX(j.hiragana) AS hiragana
+        $sql = "SELECT j.id,j.jukugo_char, MAX(j.english_meaning) AS english_meaning, MAX(j.hiragana) AS hiragana
         FROM jukugo j
         WHERE EXISTS (
             SELECT 1
