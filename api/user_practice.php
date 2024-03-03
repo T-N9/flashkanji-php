@@ -20,13 +20,46 @@ function getData($sql)
     return $data;
 }
 
-if ($is_user_id_get && $is_item_type_get) {
+if ($is_user_id_get && $is_item_type_get && $is_forFavourite) {
+
+    if ($item_type_get === 'kanji') {
+        $sql = "SELECT k.id, k.kanji_character, k.onyomi, k.kunyomi, k.meaning
+        FROM kanji k
+        JOIN user_practice up ON up.item_id = k.id
+        WHERE up.isFavourite = '1' AND up.user_id='$user_id_get' AND up.item_type='kanji'";
+    } else {
+        $sql = "SELECT j.id, j.jukugo_char, j.hiragana, j.english_meaning
+    FROM jukugo j
+    JOIN user_practice up ON up.item_id = j.id
+    WHERE up.isFavourite = '1' AND up.user_id='$user_id_get' AND up.item_type='jukugo'";
+    }
+
+    $data = getData($sql);
+    echo json_encode($data);
+
+} elseif ($is_user_id_get && $is_item_type_get && $is_forTarget) {
+
+    if ($item_type_get === 'kanji') {
+        $sql = "SELECT k.id, k.kanji_character, k.onyomi, k.kunyomi, k.meaning
+        FROM kanji k
+        JOIN user_practice up ON up.item_id = k.id
+        WHERE up.practice_status = 'need_more' AND up.user_id='$user_id_get' AND up.item_type='kanji'";
+    } else {
+        $sql = "SELECT j.id, j.jukugo_char, j.hiragana, j.english_meaning
+    FROM jukugo j
+    JOIN user_practice up ON up.item_id = j.id
+    WHERE up.practice_status = 'need_more' AND up.user_id='$user_id_get' AND up.item_type='jukugo'";
+    }
+
+    $data = getData($sql);
+    echo json_encode($data);
+
+} elseif ($is_user_id_get && $is_item_type_get) {
 
     $sql = "SELECT * FROM user_practice
     WHERE user_id='$user_id_get' AND item_type='$item_type_get'";
 
     $data = getData($sql);
-
     echo json_encode($data);
 }
 
